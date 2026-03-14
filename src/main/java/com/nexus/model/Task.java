@@ -17,20 +17,36 @@ public class Task {
     private String title;
     private TaskStatus status;
     private User owner;
+    private int estimatedEffort;
 
-    public Task(String title, LocalDate deadline) {
+    /**
+     * Construtor da classe Task
+     * @param title Titulo da tarefa.
+     * @param deadline Prazo de entrega. 
+     * @param estimatedEffort Esforco estimado em horas. 
+     */
+    public Task( String title, LocalDate deadline, int estimatedEffort ){
         this.id = nextId++;
         this.deadline = deadline;
         this.title = title;
         this.status = TaskStatus.TO_DO;
-        
-        // Ação do Aluno:
+        this.estimatedEffort = estimatedEffort; 
         totalTasksCreated++; 
+    }
+
+    /**
+     * Construtor da classe Task com estimatedEffort default = 0.
+     * @param title Titulo da tarefa.
+     * @param deadline Prazo de entrega. 
+     */
+    public Task(String title, LocalDate deadline) {
+        this( title, deadline, 0 );
     }
 
     /**
      * Move a tarefa para IN_PROGRESS.
      * Regra: Só é possível se houver um owner atribuído e não estiver BLOCKED.
+     * @param user O usuario que esta movendo a Task
      */
     public void moveToInProgress(User user) {
         if( owner == null ){
@@ -63,6 +79,11 @@ public class Task {
         activeWorkload--;
     }
 
+    /**
+     * Move a tarefa para bloqueada ou nao.
+     * @param blocked True para BLOCKED, False para TO_DO
+     */
+
     public void setBlocked(boolean blocked) {
         if ( blocked ) {
             if( status == TaskStatus.DONE ){
@@ -81,4 +102,5 @@ public class Task {
     public String getTitle() { return title; }
     public LocalDate getDeadline() { return deadline; }
     public User getOwner() { return owner; }
+    public int getEstimatedEffort(){ return estimatedEffort; }
 }
