@@ -76,6 +76,7 @@ public class Task {
             throw new NexusValidationException("[ERRO] Tarefa nao pode ser CONCLUIDA enquanto estiver BLOQUEADA.");
         }
         status = TaskStatus.DONE;
+        owner.addDone();
         activeWorkload--;
     }
 

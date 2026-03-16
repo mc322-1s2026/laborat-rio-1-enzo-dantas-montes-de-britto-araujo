@@ -5,6 +5,7 @@ import java.util.List;
 public class User {
     private final String username;
     private final String email;
+    private int total = 0;
 
     public User(String username, String email) {
         if (username == null || username.isBlank()) {
@@ -26,6 +27,15 @@ public class User {
 
     public String consultUsername() {
         return username;
+    }
+
+    public int consultTotal(){
+        return total;
+    }
+
+    public void addDone(){
+        total++;
+        return;
     }
 
     public long calculateWorkload(List<Task> lista) {
