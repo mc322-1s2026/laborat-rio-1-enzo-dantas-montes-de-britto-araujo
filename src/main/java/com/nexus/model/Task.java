@@ -30,6 +30,7 @@ public class Task {
         this.deadline = deadline;
         this.title = title;
         this.status = TaskStatus.TO_DO;
+        this.owner.addToDo(+1);
         this.estimatedEffort = estimatedEffort; 
         totalTasksCreated++; 
     }
@@ -48,6 +49,35 @@ public class Task {
      * Regra: Só é possível se houver um owner atribuído e não estiver BLOCKED.
      * @param user O usuario que esta movendo a Task
      */
+
+    void changeStatus(TaskStatus s){
+        if(status == TaskStatus.TO_DO){
+            owner.addToDo(-1);
+        }
+        if(status == TaskStatus.DONE){
+            owner.addDone(-1);
+        }
+        if(status == TaskStatus.BLOCKED){
+            owner.addBlocked(-1);
+        }
+        if(status == TaskStatus.IN_PROGRESS){
+            owner.addInProgress(-1);
+        }
+        status = s;
+        if(status == TaskStatus.TO_DO){
+            owner.addToDo(+1);
+        }
+        if(status == TaskStatus.DONE){
+            owner.addDone(+1);
+        }
+        if(status == TaskStatus.BLOCKED){
+            owner.addBlocked(+1);
+        }
+        if(status == TaskStatus.IN_PROGRESS){
+            owner.addInProgress(+1);
+        }
+    }
+
     public void moveToInProgress(User user) {
         if( owner == null ){
             totalValidationErrors++;    
@@ -61,7 +91,7 @@ public class Task {
             totalValidationErrors++;    
             throw new NexusValidationException("[ERRO] Tarefa nao pode ser atualizada para EM PROGRESSO enquando BLOQUEADA");
         }
-        status = TaskStatus.IN_PROGRESS;
+        changeStatus(TaskStatus.IN_PROGRESS);
         activeWorkload++;
         
     }
@@ -75,8 +105,7 @@ public class Task {
             totalValidationErrors++;    
             throw new NexusValidationException("[ERRO] Tarefa nao pode ser CONCLUIDA enquanto estiver BLOQUEADA.");
         }
-        status = TaskStatus.DONE;
-        owner.addDone();
+        changeStatus(TaskStatus.DONE);
         activeWorkload--;
     }
 
@@ -91,8 +120,9 @@ public class Task {
                 totalValidationErrors++;    
                 throw new NexusValidationException("[ERRO] Tarefa nao pode ser BLOQUEADA se ja estiver CONCLUIDA.");
             }
-            this.status = TaskStatus.BLOCKED;
+            changeStatus(TaskStatus.BLOCKED);
         } else {
+            changeStatus(TaskStatus.TO_DO);
             this.status = TaskStatus.TO_DO; // Simplificação para o Lab
         }
     }

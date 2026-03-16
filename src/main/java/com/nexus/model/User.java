@@ -5,7 +5,7 @@ import java.util.List;
 public class User {
     private final String username;
     private final String email;
-    private int total = 0;
+    private int totalDone = 0, totalToDo = 0, totalInProgress = 0, totalBlocked = 0;
 
     public User(String username, String email) {
         if (username == null || username.isBlank()) {
@@ -29,15 +29,43 @@ public class User {
         return username;
     }
 
-    public int consultTotal(){
-        return total;
+    public int consultTotalBlocked(){
+        return totalBlocked;
     }
 
-    public void addDone(){
-        total++;
+    public int consultTotalToDo(){
+        return totalToDo;
+    }
+    
+    public int consultTotalInProgress(){
+        return totalInProgress;
+    }
+    
+    public int consultTotalDone(){
+        return totalDone;
+    }
+
+    public void addToDo(int x){
+        totalToDo += x;
         return;
     }
 
+    public void addDone(int x){
+        totalDone += x;
+        return;
+    }
+
+    public void addInProgress(int x){
+        totalInProgress += x;
+        return;
+    }
+
+    public void addBlocked(int x){
+        totalBlocked += x;
+        return;
+    }
+
+   
     public long calculateWorkload(List<Task> lista) {
         return lista.stream()
             .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS)
