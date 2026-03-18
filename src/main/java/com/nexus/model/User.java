@@ -7,6 +7,13 @@ public class User {
     private final String email;
     private int totalDone = 0, totalToDo = 0, totalInProgress = 0, totalBlocked = 0;
 
+
+    /**
+     * Construtor do User
+     * @param username Nome de usuario
+     * @param email Email do usuario
+     */
+
     public User(String username, String email) {
         if (username == null || username.isBlank()) {
             throw new IllegalArgumentException("Username não pode ser vazio.");
@@ -20,6 +27,8 @@ public class User {
         }
         this.email = email;
     }   
+
+    // Getters
 
     public String consultEmail() {
         return email;
@@ -45,6 +54,8 @@ public class User {
         return totalDone;
     }
 
+    // Setters
+
     public void addToDo(int x){
         totalToDo += x;
         return;
@@ -65,10 +76,15 @@ public class User {
         return;
     }
 
-   
+    /**
+     * Calcula carga de trabalho do usuario
+     * @param lista Lista das tarefas existentes
+     * @return Numero de tarefas atualmente em progresso cujo usuario eh este. 
+     */
     public long calculateWorkload(List<Task> lista) {
         return lista.stream()
             .filter(t -> t.getStatus() == TaskStatus.IN_PROGRESS)
+            .filter(t -> t.getOwner() == this )
             .count(); 
     }
 }

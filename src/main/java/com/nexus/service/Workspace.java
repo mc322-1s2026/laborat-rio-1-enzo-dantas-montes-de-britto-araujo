@@ -23,6 +23,11 @@ public class Workspace {
         return Collections.unmodifiableList(tasks);
     }
 
+    /**
+     * Funcao de analise dos melhores usuarios.
+     * @return Lista ordenada com 3 usuarios com mais tarefas concluidas. 
+     */
+
     public List<User> BestUsers(){
         List <User> Best = tasks.stream()
         .map(Task::getOwner)
@@ -32,6 +37,11 @@ public class Workspace {
         return Best;
     } 
 
+    /**
+     * Funcao de analise dos usuarios mais de 10 tarefas em progresso
+     * @return Lista com todos os usuarios com mais de 10 tarefas em progresso
+     */
+
     public List<User> TenInProgress(){
         List <User> Ten = tasks.stream()
         .map(Task::getOwner)
@@ -40,6 +50,11 @@ public class Workspace {
         return Ten;
     }
 
+    /**
+     * Funcao de analise da progressao das tarefas.
+     * @return Porcentagem de tarefas concluidas.
+     */
+
     public double Percentage(){
         long sum = tasks.stream()
             .filter(t -> t.getStatus() == TaskStatus.DONE)
@@ -47,7 +62,12 @@ public class Workspace {
         return (sum*1.0)/tasks.size();    
     }
 
-    public TaskStatus BastTask(){
+    /**
+     * Funcao de analise do status mais frequente das tarefas. 
+     * @return Valor no Enum TaskStatus ( BLOCKED, TO_DO ou IN_PROGRESS ).
+     */
+
+    public TaskStatus BestTask(){
         long Blocked = tasks.stream()
             .filter(t -> t.getStatus() == TaskStatus.BLOCKED)
             .count();
