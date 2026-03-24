@@ -13,10 +13,23 @@ import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * Serviço central de gerenciamento do ecossistema Nexus.
+ * O Workspace atua como o agregador principal, gerenciando o ciclo de vida de tarefas,
+ * a organização de projetos e a atribuição de usuários, além de fornecer relatórios
+ * analíticos sobre o desempenho da equipe.
+ */
+
 public class Workspace {
     private List<Task> tasks = new ArrayList<>();
     private List<Project> projects = new ArrayList<>();
 
+    /**
+     * Adiciona uma tarefa ao workspace e a vincula automaticamente ao seu projeto correspondente.
+     * * @param task A tarefa a ser adicionada. Deve conter o nome de um projeto já existente.
+     * @throws NexusValidationException Se o projeto designado na tarefa não estiver cadastrado no workspace.
+     */
+    
     public void addTask(Task task) {
         tasks.add(task);
 
@@ -32,9 +45,21 @@ public class Workspace {
         project.addTask(task);
     }
 
+    /**
+     * Cadastra um novo projeto no workspace.
+     * * @param project O objeto a ser registrado.
+     */
+
     public void addProject(Project project){
         projects.add(project);
     }
+
+    /**
+     * Atribui um usuário como responsável por uma tarefa específica.
+     * * @param taskID O identificador único da tarefa.
+     * @param user O usuário que assumirá a responsabilidade.
+     * @throws NexusValidationException Caso o ID fornecido não corresponda a nenhuma tarefa.
+     */
 
     public void assignUser( int taskID, User user ){
         Task task = tasks.stream()
@@ -47,6 +72,13 @@ public class Workspace {
 
         task.assignOwner(user);
     }
+
+    /**
+     * Altera o status de uma tarefa gerenciando as regras de transição de estado.
+     * * @param taskID O ID da tarefa a ser modificada.
+     * @param newStatus O novo TaskStatus desejado.
+     * @throws NexusValidationException Se a tarefa não for encontrada ou se a transição for inválida.
+     */
 
     public void changeTaskStatus( int taskID, TaskStatus newStatus ){
         Task task = tasks.stream()
@@ -64,6 +96,11 @@ public class Workspace {
             case TaskStatus.IN_PROGRESS -> task.moveToInProgress();
         }
     }
+
+    /**
+     * Retorna a lista completa de tarefas.
+     * * @return Uma lista imutável de todas as instâncias das Tasks.
+     */
 
     public List<Task> getTasks() {
         // Retorna uma visão não modificável para garantir encapsulamento
@@ -132,6 +169,10 @@ public class Workspace {
             return TaskStatus.TO_DO;
         return TaskStatus.IN_PROGRESS;
     }
+
+    /**
+     * Gera um relatório formatado no console com as métricas de produtividade e saúde do workspace.
+     */
 
     public void reportStatus(){
         List<User> bestUsers = BestUsers();
