@@ -34,9 +34,47 @@ public class LogProcessor {
                                 System.out.println("[LOG] Usuário criado: " + p[1]);
                             }
                             case "CREATE_TASK" -> {
-                                Task t = new Task(p[1], LocalDate.parse(p[2]));
+                                Task t = new Task(p[1], LocalDate.parse(p[2]), Integer.parseInt(p[3]), p[4]);
                                 workspace.addTask(t);
+
                                 System.out.println("[LOG] Tarefa criada: " + p[1]);
+                            }
+                            case "CREATE_PROJECT" -> {
+                                Project project = new Project(p[1], Integer.parseInt(p[2]));
+                                workspace.addProject(project);
+
+                                System.out.println("[LOG] Projeto criado: " + p[1]);
+                            }
+                            case "ASSIGN_USER" -> {
+                                User user = users.stream()
+                                .filter( u -> u.consultUsername().equals(p[2]) )
+                                .findFirst()
+                                .orElse(null);
+
+                                if( user == null )
+                                        throw new NexusValidationException("Usuario inexistente");
+
+                                workspace.assignUser( Integer.parseInt(p[1]), user );
+                                System.out.println("[LOG] Dono da tarefa designado: Tarefa ID " + p[1] + " Usuario " + p[2]);
+
+                            }
+                            case "CHANGE_STATUS" -> {
+                                TaskStatus newStatus;
+                                switch (p[2]){
+                                    case "DONE" -> newStatus = TaskStatus.DONE;
+                                    case "IN_PROGRESS" ->  newStatus = TaskStatus.IN_PROGRESS;
+                                    case "BLOCKED" -> newStatus = TaskStatus.BLOCKED; 
+                                    case "TO_DO" -> newStatus = TaskStatus.TO_DO;
+                                    default ->  throw new NexusValidationException("Status da tarefa desconhecido.");
+                                }
+
+                                workspace.changeTaskStatus( Integer.parseInt(p[1]), newStatus );
+
+                                System.out.println("[LOG] Status da tarefa alterado: Tarefa ID " + p[1] + " Novo Status " + p[2]);
+
+                            }
+                            case "REPORT_STATUS" -> {
+                                workspace.reportStatus();
                             }
                             default -> System.err.println("[WARN] Ação desconhecida: " + action);
                         }

@@ -18,6 +18,7 @@ public class Task {
     private TaskStatus status;
     private User owner;
     private int estimatedEffort;
+    private String assignedProjectName;
 
     /**
      * Construtor da classe Task
@@ -25,23 +26,50 @@ public class Task {
      * @param deadline Prazo de entrega. 
      * @param estimatedEffort Esforco estimado em horas. 
      */
-    public Task( String title, LocalDate deadline, int estimatedEffort ){
+    public Task( String title, LocalDate deadline, int estimatedEffort, String assignedProjectName ){
+
+        if( title == null || title.isBlank() ){
+            totalValidationErrors++;
+            throw new NexusValidationException("Nome da tarefa nao deve estar em branco.");
+        }
+
+        if( estimatedEffort < 0 ){
+            totalValidationErrors++;
+            throw new NexusValidationException("Esforco estimado nao deve ser negativo.");
+        }
+
+        if( assignedProjectName == null || assignedProjectName.isBlank() ){
+            totalValidationErrors++;
+            throw new NexusValidationException("Nome do projeto designado nao deve estar em branco.");
+        }
+
+
         this.id = nextId++;
         this.deadline = deadline;
         this.title = title;
         this.status = TaskStatus.TO_DO;
-        this.owner.addToDo(+1);
         this.estimatedEffort = estimatedEffort; 
+        this.assignedProjectName = assignedProjectName;
+
         totalTasksCreated++; 
     }
 
     /**
-     * Construtor da classe Task com estimatedEffort default = 0.
+     * Construtor da classe Task com estimatedEffort = 0 e assignedProjectName = null.
      * @param title Titulo da tarefa.
      * @param deadline Prazo de entrega. 
      */
     public Task(String title, LocalDate deadline) {
-        this( title, deadline, 0 );
+        this( title, deadline, 0, null);
+    }
+
+    /**
+     * Metodo para designar o dono da tarefa
+     * @param user O usuario do dono da tarefa.
+     */
+
+    public void assignOwner( User user ){
+        this.owner = user; 
     }
 
     /**
@@ -78,19 +106,12 @@ public class Task {
         }
     }
 
-    public void moveToInProgress(User user) {
+    public void moveToInProgress() {
         if( owner == null ){
             totalValidationErrors++;    
             throw new NexusValidationException("[ERRO] Esta tarefa nao possui dono e nao pode ser atualizada para EM PROGRESSO.");
         }
-        if( owner.consultUsername() != user.consultUsername() || owner.consultEmail() != user.consultEmail() ){
-            totalValidationErrors++;    
-            throw new NexusValidationException("[ERRO] Usuario que requisitou atualizacao para EM PROGRESSO nao e dono da tarefa.");
-        }
-        if( status == TaskStatus.BLOCKED ){
-            totalValidationErrors++;    
-            throw new NexusValidationException("[ERRO] Tarefa nao pode ser atualizada para EM PROGRESSO enquando BLOQUEADA");
-        }
+        
         changeStatus(TaskStatus.IN_PROGRESS);
         activeWorkload++;
         
@@ -134,4 +155,5 @@ public class Task {
     public LocalDate getDeadline() { return deadline; }
     public User getOwner() { return owner; }
     public int getEstimatedEffort(){ return estimatedEffort; }
+    public String getAssignedProjectName() { return assignedProjectName; }
 }

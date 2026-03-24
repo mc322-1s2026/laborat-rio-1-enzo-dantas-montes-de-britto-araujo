@@ -22,7 +22,7 @@ public class User {
         if(email == null || email.isBlank()){
             throw new IllegalArgumentException("Email não pode ser vazio.");
         }
-        if(!email.contains("@") && !email.endsWith(".com")){
+        if(!email.contains("@") || !email.endsWith(".com")){
             throw new IllegalArgumentException("Email precisa conter @ e terminar com .com");
         }
         this.email = email;
