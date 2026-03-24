@@ -6,7 +6,21 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Processador de logs e comandos do sistema Nexus.
+ * Esta classe é responsável por ler arquivos de texto estruturados e converter suas 
+ * linhas em operações dentro do sistema, como criação de entidades e movimentação 
+ * de tarefas. Ela atua como uma interface entre arquivos externos e o domínio da aplicação.
+ */
+
 public class LogProcessor {
+
+    /**
+     * Lê e processa um arquivo de log linha por linha, executando as ações correspondentes.
+     * @param fileName Nome do arquivo dentro da pasta de recursos (ex: "log.txt").
+     * @param workspace Instância do {@link Workspace} onde os dados serão armazenados.
+     * @param users Lista global de usuários para controle de referência.
+     */
 
     public void processLog(String fileName, Workspace workspace, List<User> users) {
         try {
