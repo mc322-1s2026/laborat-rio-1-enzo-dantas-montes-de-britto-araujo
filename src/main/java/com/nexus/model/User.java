@@ -2,6 +2,13 @@ package com.nexus.model;
 
 import java.util.List;
 
+/**
+ * Representa um usuário (colaborador) no sistema Nexus.
+ * Esta classe armazena informações de identificação e mantém contadores de desempenho
+ * para monitorar a quantidade de tarefas em cada estado (pendente, em progresso, 
+ * concluída ou bloqueada).
+ */
+
 public class User {
     private final String username;
     private final String email;
