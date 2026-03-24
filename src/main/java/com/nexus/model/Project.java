@@ -5,6 +5,13 @@ import java.util.List;
 
 import com.nexus.exception.NexusValidationException;
 
+/**
+ * Representa um projeto dentro do sistema Nexus.
+ * Um projeto é definido por um nome e um orçamento total de horas (budget).
+ * Ele gerencia uma coleção de tarefas, garantindo que o esforço somado de todas 
+ * as tarefas não ultrapasse o limite de horas estabelecido na criação.
+ */
+
 public class Project {
     private String projectName; 
     private List<Task> tasks = new ArrayList<>(); 
