@@ -4,6 +4,12 @@ import java.time.LocalDate;
 
 import com.nexus.exception.NexusValidationException;
 
+/**
+ * Representa a unidade fundamental de trabalho no ecossistema Nexus.
+ * A classe gerencia o estado de uma tarefa, valida dados de entrada no nascimento 
+ * do objeto e mantém métricas globais de integridade e carga de trabalho.
+ */
+
 public class Task {
     // Métricas Globais (Alunos implementam a lógica de incremento/decremento)
     public static int totalTasksCreated = 0;
@@ -106,6 +112,11 @@ public class Task {
         }
     }
 
+    /**
+     * Altera o status da tarefa para IN_PROGRESS.
+     * @throws NexusValidationException Caso a tarefa não possua um dono designado.
+     */
+    
     public void moveToInProgress() {
         if( owner == null ){
             totalValidationErrors++;    
