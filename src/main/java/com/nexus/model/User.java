@@ -2,6 +2,8 @@ package com.nexus.model;
 
 import java.util.List;
 
+import com.nexus.exception.NexusValidationException;
+
 /**
  * Representa um usuário (colaborador) no sistema Nexus.
  * Esta classe armazena informações de identificação e mantém contadores de desempenho
@@ -23,14 +25,14 @@ public class User {
 
     public User(String username, String email) {
         if (username == null || username.isBlank()) {
-            throw new IllegalArgumentException("Username não pode ser vazio.");
+            throw new NexusValidationException("Username não pode ser vazio.");
         }
         this.username = username;
         if(email == null || email.isBlank()){
-            throw new IllegalArgumentException("Email não pode ser vazio.");
+            throw new NexusValidationException("Email não pode ser vazio.");
         }
         if(!email.contains("@") || !email.endsWith(".com")){
-            throw new IllegalArgumentException("Email precisa conter @ e terminar com .com");
+            throw new NexusValidationException("Email precisa conter @ e terminar com .com");
         }
         this.email = email;
     }   
