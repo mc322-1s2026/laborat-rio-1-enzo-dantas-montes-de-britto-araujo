@@ -25,14 +25,14 @@ public class User {
 
     public User(String username, String email) {
         if (username == null || username.isBlank()) {
-            throw new NexusValidationException("Username não pode ser vazio.");
+            throw new IllegalArgumentException("Username não pode ser vazio.");
         }
         this.username = username;
         if(email == null || email.isBlank()){
-            throw new NexusValidationException("Email não pode ser vazio.");
+            throw new IllegalArgumentException("Email não pode ser vazio.");
         }
         if(!email.contains("@") || !email.endsWith(".com")){
-            throw new NexusValidationException("Email precisa conter @ e terminar com .com");
+            throw new IllegalArgumentException("Email precisa conter @ e terminar com .com");
         }
         this.email = email;
     }   

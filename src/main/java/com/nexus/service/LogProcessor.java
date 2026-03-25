@@ -92,7 +92,7 @@ public class LogProcessor {
                             }
                             default -> System.err.println("[WARN] Ação desconhecida: " + action);
                         }
-                    } catch (NexusValidationException e) {
+                    } catch (NexusValidationException|ArrayIndexOutOfBoundsException|IllegalArgumentException e) {
                         System.err.println("[ERRO DE REGRAS] Falha no comando '" + line + "': " + e.getMessage());
                     }
                 }
